@@ -13,10 +13,12 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Payement from "../Components/Payement";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 const Tabnav = createBottomTabNavigator();
+const TopTab = createMaterialTopTabNavigator();
 
 function LogoTitle() {
   return (
@@ -101,9 +103,9 @@ const HomeStackNavigator = () => (
     initialRouteName="Login"
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#1a75ff",
+        backgroundColor: "#fff",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#e43347",
       headerTitleStyle: {
         fontWeight: "bold",
         textAlign: "center",
@@ -117,8 +119,12 @@ const HomeStackNavigator = () => (
     />
     <Stack.Screen
       name="FactureList"
-      component={MyTab}
-      options={{ title: "Factures", headerShown: false }}
+      component={MyTopTab}
+      options={{
+        title: "NetPaye",
+        headerShown: true,
+        headerLeft: (props) => <LogoTitle {...props} />,
+      }}
     />
     <Stack.Screen
       name="FactureRecus"
@@ -131,6 +137,26 @@ const HomeStackNavigator = () => (
       options={{ title: "Payement de la facture" }}
     />
   </Stack.Navigator>
+);
+
+const MyTopTab = () => (
+  <TopTab.Navigator>
+    <Tab.Screen
+      name="Home"
+      component={FactureList}
+      options={{ title: "Factures" }}
+    />
+    <Tab.Screen
+      name="FactureNonPayee"
+      component={FactureNonPayee}
+      options={{ title: "Impayée" }}
+    />
+    <Tab.Screen
+      name="FacturePayee"
+      component={FacturePayee}
+      options={{ title: "Payée" }}
+    />
+  </TopTab.Navigator>
 );
 
 const MyTab = () => (
