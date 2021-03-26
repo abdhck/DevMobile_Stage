@@ -1,7 +1,7 @@
 // Navigation/Navigation.js
 //import 'react-native-gesture-handler';
 import React from "react";
-import { Image, StyleSheet } from "react-native";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Login from "../Components/Login";
@@ -12,18 +12,30 @@ import FactureRecus from "../Components/FactureRecus";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Payement from "../Components/Payement";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
-const StackPaye = createStackNavigator();
+const Tabnav = createBottomTabNavigator();
+
+function LogoTitle() {
+  return (
+    <TouchableOpacity style={styles.iconpos}>
+      <Image
+        source={require("../Images/netforce.jpg")}
+        style={styles.iconbar}
+      />
+    </TouchableOpacity>
+  );
+}
 
 const PayerStackNavigator = () => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#009387",
+        //backgroundColor: "#009387",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#006a80",
       headerTitleStyle: {
         fontWeight: "bold",
         textAlign: "center",
@@ -42,9 +54,9 @@ const ImpayerStackNavigator = () => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#ff9900",
+        //backgroundColor: "#ff9900",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#e43347",
       headerTitleStyle: {
         fontWeight: "bold",
         textAlign: "center",
@@ -63,9 +75,9 @@ const homeFactureStackNavigator = () => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#1a75ff",
+        backgroundColor: "#fff",
       },
-      headerTintColor: "#fff",
+      headerTintColor: "#e43347",
       headerTitleStyle: {
         fontWeight: "bold",
         textAlign: "center",
@@ -75,7 +87,11 @@ const homeFactureStackNavigator = () => (
     <Stack.Screen
       name="HomeFactureList"
       component={FactureList}
-      options={{ title: "Factures" }}
+      options={{
+        title: "NetPaye",
+
+        headerLeft: (props) => <LogoTitle {...props} />,
+      }}
     />
   </Stack.Navigator>
 );
@@ -101,7 +117,7 @@ const HomeStackNavigator = () => (
     />
     <Stack.Screen
       name="FactureList"
-      component={BottomNavigate}
+      component={MyTab}
       options={{ title: "Factures", headerShown: false }}
     />
     <Stack.Screen
@@ -115,6 +131,50 @@ const HomeStackNavigator = () => (
       options={{ title: "Payement de la facture" }}
     />
   </Stack.Navigator>
+);
+
+const MyTab = () => (
+  <Tabnav.Navigator
+    initialRouteName="Home"
+    tabBarOptions={{
+      //activeTintColor: "#1a75ff",
+      activeTintColor: "#e43347",
+      //activeBackgroundColor: "#eee",
+    }}
+  >
+    <Tabnav.Screen
+      name="Home"
+      component={homeFactureStackNavigator}
+      options={{
+        tabBarLabel: "Home",
+        tabBarIcon: ({ color }) => (
+          <MaterialCommunityIcons name="home" color={color} size={20} />
+        ),
+      }}
+    />
+    <Tabnav.Screen
+      //barStyle={{ backgroundColor: "tomato" }}
+      name="FactureNonPayee"
+      component={ImpayerStackNavigator}
+      options={{
+        tabBarLabel: "Non payée ",
+        tabBarIcon: ({ color }) => (
+          <AntDesign name="exclefile1" color={color} size={20} />
+        ),
+      }}
+    />
+    <Tabnav.Screen
+      //barStyle={{ backgroundColor: "tomato" }}
+      name="FacturePayee"
+      component={PayerStackNavigator}
+      options={{
+        tabBarLabel: "Payée ",
+        tabBarIcon: ({ color }) => (
+          <AntDesign name="pptfile1" color={color} size={20} />
+        ),
+      }}
+    />
+  </Tabnav.Navigator>
 );
 
 const BottomNavigate = () => (
@@ -166,6 +226,13 @@ const styles = StyleSheet.create({
   icon: {
     width: 20,
     height: 20,
+  },
+  iconbar: {
+    width: 50,
+    height: 50,
+  },
+  iconpos: {
+    left: 20,
   },
 });
 

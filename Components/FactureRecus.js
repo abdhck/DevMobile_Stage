@@ -5,6 +5,8 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
+  Image,
+  Share,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -38,6 +40,23 @@ class FactureRecus extends React.Component {
       </View>
     );
   }
+  _shareRecu() {
+    // const { film } = this.state;
+    Share.share({ title: "essai", message: "partage" });
+  }
+  _displayFloatingActionButton() {
+    return (
+      <TouchableOpacity
+        style={styles.share_touchable_floatingactionbutton}
+        onPress={() => this._shareRecu()}
+      >
+        <Image
+          style={styles.share_image}
+          source={require("../Images/ic_share.png")}
+        />
+      </TouchableOpacity>
+    );
+  }
 
   render() {
     return (
@@ -48,7 +67,8 @@ class FactureRecus extends React.Component {
             Le reçu de la facture : {this.props.route.params.id}
           </Text>
         </View>
-        {this._retour()}
+        {/*this._retour()*/}
+        {this._displayFloatingActionButton()}
       </View>
     );
   }
@@ -93,6 +113,22 @@ const styles = StyleSheet.create({
   title_text: {
     fontWeight: "bold",
     fontSize: 20,
+  },
+  share_touchable_floatingactionbutton: {
+    position: "absolute",
+    width: 60,
+    height: 60,
+    right: 30,
+    bottom: 30,
+    borderRadius: 30,
+    backgroundColor: "#e91e63",
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 3,
+  },
+  share_image: {
+    width: 30,
+    height: 30,
   },
 });
 

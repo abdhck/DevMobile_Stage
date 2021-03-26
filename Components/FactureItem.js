@@ -4,6 +4,7 @@ import moment from "moment";
 import numeral from "numeral";
 import { decode } from "html-entities";
 import { LinearGradient } from "expo-linear-gradient";
+import { Title } from "react-native-paper";
 //import Ripple from "react-native-material-ripple";
 import FadeIn from "../Animations/FadeIn";
 import FactureRecus from "../Components/FactureRecus";
@@ -28,9 +29,9 @@ class FactureItem extends React.Component {
   }
 
   _displayFactureImage(facture) {
-    var sourceImage = require("../Images/factura.png");
+    var sourceImage = require("../Images/right-arrow.png");
     if (decode(facture.etat) !== "Reglé") {
-      sourceImage = require("../Images/dinero.png");
+      sourceImage = require("../Images/right-arrow.png");
     }
     return <Image style={styles.facture_image} source={sourceImage} />;
   }
@@ -53,6 +54,7 @@ class FactureItem extends React.Component {
     console.log("bug :" + openDetail);
     return (
       <View style={styles.main_container}>
+        {/*<View style={styles.right}>{this._displayFactureImage(facture)}</View>*/}
         <TouchableOpacity
           onPress={() => {
             openDetail(facture);
@@ -61,7 +63,10 @@ class FactureItem extends React.Component {
         >
           <View>
             <View style={styles.header}>
-              <Text style={styles.title_text}> {facture.titre} </Text>
+              <Title style={styles.title_text} numberOfLines={1}>
+                {" "}
+                {facture.titre}{" "}
+              </Title>
               <Text style={styles.date_text}>
                 {moment(facture.date).format("L")}{" "}
               </Text>
@@ -96,9 +101,8 @@ class FactureItem extends React.Component {
           onPress={() => {
             openDetail(facture);
           }}
-          style={styles.right}
         >
-          <View>{this._displayFactureImage(facture)}</View>
+          <View style={styles.right}>{this._displayFactureImage(facture)}</View>
         </TouchableOpacity>
       </View>
     );
@@ -107,9 +111,9 @@ class FactureItem extends React.Component {
 
 const styles = StyleSheet.create({
   main_container: {
-    margin: 2,
+    //margin: 2,
     flex: 1,
-    height: 70,
+    //height: 70,
     //borderWidth: 1,
     // borderColor: "#eee",
     justifyContent: "center",
@@ -126,7 +130,7 @@ const styles = StyleSheet.create({
     //height: 30,
     justifyContent: "space-between",
     alignItems: "center",
-    //flex: 1,
+    flexWrap: "wrap",
   },
   body: {
     //height: 45,
@@ -142,48 +146,53 @@ const styles = StyleSheet.create({
     // backgroundColor: "green",
     //height: 40,
     justifyContent: "space-between",
+    marginBottom: 3,
   },
   right: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     // width: 60,
-    height: 50,
+    //height: 70,
     //borderRadius: 30,
-    backgroundColor: "#1a75ff",
-    borderTopRightRadius: 20,
-    borderBottomRightRadius: 20,
-    marginRight: 3,
-    elevation: 3,
+    backgroundColor: "#fff",
+    //borderTopRightRadius: 20,
+    //borderBottomRightRadius: 20,
+    //marginRight: 3,
+    //elevation: 3,
+    borderBottomWidth: 2,
+    borderColor: "#eee",
   },
   left: {
     flex: 4,
     justifyContent: "center",
-    borderColor: "#1a75ff",
-    borderWidth: 1,
+    borderColor: "#eee",
+    //borderWidth: 1,
     // width: 70,
-    height: 70,
+    //height: 70,
     //borderTopLeftRadius: 15,
     //borderBottomLeftRadius: 15,
     //alignItems: "center",
     backgroundColor: "#fff",
-    borderTopRightRadius: 10,
-    borderBottomRightRadius: 10,
+    //borderTopRightRadius: 10,
+    //borderBottomRightRadius: 10,
+    borderBottomWidth: 2,
     marginLeft: 3,
+    //marginRight: 3,
   },
   title_text: {
-    fontWeight: "bold",
+    // fontWeight: "bold",
     fontSize: 15,
     //flex: 1,
     flexWrap: "wrap",
-    paddingRight: 5,
+    //paddingRight: 5,
     //fontStyle: "italic",
     //color: "#2196F3",
   },
   date_text: {
     //fontWeight: "bold",
     //fontSize: 26,
-    color: "#2196F3",
+    color: "#02519e",
     fontStyle: "italic",
   },
   commentaire_text: {
@@ -225,7 +234,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     //fontWeight: "bold",
     fontStyle: "italic",
-    color: "#ff9900",
+    color: "#e43347",
   },
   etat2_text: {
     fontWeight: "bold",
@@ -235,8 +244,8 @@ const styles = StyleSheet.create({
   },
   facture_image: {
     //flex: 1,
-    width: 40,
-    height: 40,
+    width: 25,
+    height: 25,
     // borderRadius: 30,
     //backgroundColor: "#ff9900",
   },
