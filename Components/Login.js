@@ -16,6 +16,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { connect } from "react-redux";
+import { Headline } from "react-native-paper";
 
 class Login extends React.Component {
   constructor(props) {
@@ -91,7 +92,7 @@ class Login extends React.Component {
       <View style={styles.main_container}>
         <View style={styles.login_container}>
           {/*<FontAwesome name="connectdevelop" size={100} />*/}
-          <Text style={styles.title_text}> Login </Text>
+          <Headline> Login </Headline>
         </View>
         <View style={styles.connetion_container}>
           <View style={styles.input_container}>
