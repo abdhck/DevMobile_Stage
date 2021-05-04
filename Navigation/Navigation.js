@@ -9,80 +9,148 @@ import FactureList from "../Components/FactureList";
 import FactureNonPayee from "../Components/FactureNonPayee";
 import FacturePayee from "../Components/FacturePayee";
 import FactureRecus from "../Components/FactureRecus";
+import FactureDetail from "../Components/FactureDetail";
+import FactureSearch from "../Components/FactureSearch";
+import FactureCalculAcceuil from "../Components/FactureCalculAcceuil";
+import FactureAcceuil from "../Components/FactureAcceuil";
+import Accueil from "../Components/Accueil";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Payement from "../Components/Payement";
+import FactureParametre from "../Components/FactureParametre";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import Ionicons from "react-native-vector-icons/Ionicons";
+//import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+const ICON_TAILLE = 27;
+const ICON_COLOR = "#fff";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createStackNavigator();
 const Tabnav = createBottomTabNavigator();
 const TopTab = createMaterialTopTabNavigator();
+const Drawer = createDrawerNavigator();
 
-function LogoTitle() {
+function LogoMenu() {
   return (
-    <TouchableOpacity style={styles.iconpos}>
+    <TouchableOpacity
+      style={styles.icon_left}
+      onPress={() => {
+        navigation.openDrawer();
+      }}
+    >
       <Image
-        source={require("../Images/netforce.jpg")}
+        source={require("../Images/menu_white.png")}
         style={styles.iconbar}
       />
     </TouchableOpacity>
   );
 }
+function LogoSearch(navigation) {
+  return (
+    <TouchableOpacity
+      style={styles.icon_right}
+      onPress={() => {
+        navigation.navigate("FactureSearch");
+      }}
+    >
+      <Image source={require("../Images/search.png")} style={styles.iconbar} />
+    </TouchableOpacity>
+  );
+}
 
-const PayerStackNavigator = () => (
+const PayerStackNavigator = ({ navigation }) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        //backgroundColor: "#009387",
+        backgroundColor: "#02519e",
+        elevation: 0,
       },
-      headerTintColor: "#006a80",
+      headerTintColor: "#fff",
       headerTitleStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
       },
     }}
   >
     <Stack.Screen
       name="FacturePayee"
       component={FacturePayee}
-      options={{ title: "Factures reglée" }}
+      options={{
+        title: "Factures reglée",
+        headerLeft: (props) => (
+          <TouchableOpacity
+            style={styles.icon_left}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="md-arrow-back"
+              size={ICON_TAILLE}
+              color={ICON_COLOR}
+            />
+          </TouchableOpacity>
+        ),
+      }}
     />
   </Stack.Navigator>
 );
 
-const ImpayerStackNavigator = () => (
+const ImpayerStackNavigator = ({ navigation }) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        //backgroundColor: "#ff9900",
+        backgroundColor: "#02519e",
+        elevation: 0,
       },
-      headerTintColor: "#e43347",
+      headerTintColor: "#fff",
       headerTitleStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
       },
     }}
   >
     <Stack.Screen
       name="FactureNonPayee"
       component={FactureNonPayee}
-      options={{ title: "Factures non reglée" }}
+      options={{
+        title: "Factures non reglée",
+        headerLeft: (props) => (
+          <TouchableOpacity
+            style={styles.icon_left}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="md-arrow-back"
+              size={ICON_TAILLE}
+              color={ICON_COLOR}
+            />
+          </TouchableOpacity>
+        ),
+      }}
     />
   </Stack.Navigator>
 );
 
-const homeFactureStackNavigator = () => (
+const homeFactureStackNavigator = ({ navigation }) => (
   <Stack.Navigator
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#fff",
+        backgroundColor: "#02519e",
+        elevation: 0,
       },
-      headerTintColor: "#e43347",
+      headerTintColor: "#fff",
       headerTitleStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
       },
     }}
   >
@@ -91,24 +159,212 @@ const homeFactureStackNavigator = () => (
       component={FactureList}
       options={{
         title: "NetPaye",
-
-        headerLeft: (props) => <LogoTitle {...props} />,
+        headerLeft: (props) => (
+          <TouchableOpacity
+            style={styles.icon_left}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="md-arrow-back"
+              size={ICON_TAILLE}
+              color={ICON_COLOR}
+            />
+          </TouchableOpacity>
+        ),
       }}
     />
   </Stack.Navigator>
 );
 
-const HomeStackNavigator = () => (
+const FactureParametreStackNavigator = ({ navigation }) => (
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: "#02519e",
+        elevation: 0,
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
+      },
+    }}
+  >
+    <Stack.Screen
+      name="FactureParametre"
+      component={FactureParametre}
+      options={{
+        title: "Parametre",
+        headerLeft: (props) => (
+          <TouchableOpacity
+            style={styles.icon_left}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
+            <Ionicons
+              name="md-arrow-back"
+              size={ICON_TAILLE}
+              color={ICON_COLOR}
+            />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const accueilStackNavigator = ({ navigation }) => (
+  <Stack.Navigator
+    screenOptions={{
+      headerStyle: {
+        backgroundColor: "#02519e",
+        elevation: 0,
+      },
+      headerTintColor: "#fff",
+      headerTitleStyle: {
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
+      },
+    }}
+  >
+    <Stack.Screen
+      name="FactureAcceuil"
+      component={FactureAcceuil}
+      options={{
+        title: "NetPay",
+        headerLeft: (props) => (
+          <TouchableOpacity
+            style={styles.icon_left}
+            onPress={() => {
+              navigation.openDrawer();
+            }}
+          >
+            <Image
+              source={require("../Images/menu_white.png")}
+              style={styles.iconbar}
+            />
+          </TouchableOpacity>
+        ),
+        headerRight: (props) => (
+          <TouchableOpacity
+            style={styles.icon_right}
+            onPress={() => {
+              navigation.navigate("FactureSearch");
+            }}
+          >
+            <Image
+              source={require("../Images/search.png")}
+              style={styles.iconbar}
+            />
+          </TouchableOpacity>
+        ),
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const MyDrawer = () => {
+  return (
+    <Drawer.Navigator
+      initialRouteName="accueilStackNavigator"
+      drawerStyle={{
+        backgroundColor: "#fff",
+        //width: 240,
+      }}
+    >
+      <Drawer.Screen
+        name="accueilStackNavigator"
+        component={accueilStackNavigator}
+        options={{
+          title: "Accueil",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-home-outline"
+              size={size}
+              color={focused ? "#02519e" : "#777"}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="ImpayerStackNavigator"
+        component={ImpayerStackNavigator}
+        options={{
+          title: "Facture impayée",
+          drawerIcon: ({ focused, size }) => (
+            <AntDesign
+              name="exclefile1"
+              size={size}
+              color={focused ? "#02519e" : "#777"}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="PayerStackNavigator"
+        component={PayerStackNavigator}
+        options={{
+          title: "Facture payée",
+
+          drawerIcon: ({ focused, size }) => (
+            <AntDesign
+              name="pptfile1"
+              size={size}
+              color={focused ? "#02519e" : "#777"}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="homeFactureStackNavigator"
+        component={homeFactureStackNavigator}
+        options={{
+          title: "Toutes les factures",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="md-documents-outline"
+              size={size}
+              color={focused ? "#02519e" : "#777"}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="FactureParametreStackNavigator"
+        component={FactureParametreStackNavigator}
+        options={{
+          title: "Paramètre",
+          drawerIcon: ({ focused, size }) => (
+            <Ionicons
+              name="ios-settings-outline"
+              size={size}
+              color={focused ? "#02519e" : "#777"}
+            />
+          ),
+        }}
+      />
+    </Drawer.Navigator>
+  );
+};
+
+const HomeStackNavigator = ({ navigation }) => (
   <Stack.Navigator
     initialRouteName="Login"
     screenOptions={{
       headerStyle: {
-        backgroundColor: "#fff",
+        backgroundColor: "#02519e",
+        elevation: 0,
       },
-      headerTintColor: "#e43347",
+      headerTintColor: "#fff",
       headerTitleStyle: {
-        fontWeight: "bold",
-        textAlign: "center",
+        //fontWeight: "bold",
+        //textAlign: "center",
+        // left: 10,
       },
     }}
   >
@@ -120,11 +376,23 @@ const HomeStackNavigator = () => (
     <Stack.Screen
       name="FactureList"
       component={MyTopTab}
-      options={{
-        title: "NetPaye",
-        headerShown: true,
-        headerLeft: (props) => <LogoTitle {...props} />,
-      }}
+      options={({ route, navigation }) => ({
+        title: "NetPay",
+        headerRight: (props) => (
+          <TouchableOpacity
+            style={styles.icon_right}
+            onPress={() => {
+              navigation.navigate("FactureSearch");
+            }}
+          >
+            <Image
+              source={require("../Images/search.png")}
+              style={styles.iconbar}
+            />
+          </TouchableOpacity>
+        ),
+        //headerShown: true,
+      })}
     />
     <Stack.Screen
       name="FactureRecus"
@@ -136,16 +404,47 @@ const HomeStackNavigator = () => (
       component={Payement}
       options={{ title: "Payement de la facture" }}
     />
+    <Stack.Screen
+      name="FactureDetail"
+      component={FactureDetail}
+      options={{ title: "Détail de la facture" }}
+    />
+    <Stack.Screen
+      name="FactureAcceuil"
+      component={FactureAcceuil}
+      //options={{ title: "Détail de la facture" }}
+    />
+    <Stack.Screen
+      name="MyDrawer"
+      component={MyDrawer}
+      options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="ImpayerStackNavigator"
+      component={ImpayerStackNavigator}
+      // options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="PayerStackNavigator"
+      component={PayerStackNavigator}
+      //options={{ headerShown: false }}
+    />
+    <Stack.Screen
+      name="FactureSearch"
+      component={FactureSearch}
+      options={{ headerShown: false }}
+    />
   </Stack.Navigator>
 );
 
 const MyTopTab = () => (
-  <TopTab.Navigator>
-    <Tab.Screen
-      name="Home"
-      component={FactureList}
-      options={{ title: "Factures" }}
-    />
+  <TopTab.Navigator
+    tabBarOptions={{
+      tabStyle: { backgroundColor: "#02519e" },
+      activeTintColor: "#fff",
+      indicatorStyle: { color: "#fff" },
+    }}
+  >
     <Tab.Screen
       name="FactureNonPayee"
       component={FactureNonPayee}
@@ -155,6 +454,11 @@ const MyTopTab = () => (
       name="FacturePayee"
       component={FacturePayee}
       options={{ title: "Payée" }}
+    />
+    <Tab.Screen
+      name="Home"
+      component={FactureList}
+      options={{ title: "Factures" }}
     />
   </TopTab.Navigator>
 );
@@ -250,15 +554,18 @@ const BottomNavigate = () => (
 );
 const styles = StyleSheet.create({
   icon: {
-    width: 20,
-    height: 20,
+    width: 27,
+    height: 27,
   },
   iconbar: {
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
   },
-  iconpos: {
-    left: 20,
+  icon_left: {
+    left: 10,
+  },
+  icon_right: {
+    right: 10,
   },
 });
 

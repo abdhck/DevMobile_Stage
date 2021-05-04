@@ -10,16 +10,16 @@ const initialState = {
 };
 
 function toggleLogin(state = initialState, action) {
-  //console.log("value :" + action.value);
-  let nextState; let etat="Reglé";
+  let nextState;
+  let etat = "Reglé";
   //console.log("value dans avant case :" + action.value);
   //const result = words.filter((word) => word.length > 6);
-   const facturePayee = state.dataFacture.filter(
-     (item) => decode(item.etat) === "Reglé"
-   );
-   const factureImpayee = state.dataFacture.filter(
-     (item) => decode(item.etat) !== "Reglé"
-   );
+  const facturePayee = state.dataFacture.filter(
+    (item) => decode(item.etat) === "Reglé"
+  );
+  const factureImpayee = state.dataFacture.filter(
+    (item) => decode(item.etat) !== "Reglé"
+  );
   switch (action.type) {
     case "CONNECT_USER":
       if (action.value.length !== 0) {

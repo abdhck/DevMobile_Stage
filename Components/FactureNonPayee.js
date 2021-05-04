@@ -24,11 +24,10 @@ class FactureNonPayee extends React.Component {
   }
 
   _openDetail = (facture) => {
-    if (decode(facture.etat) == "Reglé") {
-      this.props.navigation.navigate("FactureRecus", { id: facture.id });
-    } else {
-      this.props.navigation.navigate("Payement", { id: facture.id });
-    }
+    this.props.navigation.navigate("Payement", { id: facture.id });
+  };
+  _openFactureDetail = (facture) => {
+    this.props.navigation.navigate("FactureDetail", { facture: facture });
   };
 
   render() {
@@ -41,7 +40,11 @@ class FactureNonPayee extends React.Component {
           )}
           keyExtractor={(_, index) => `${index}`}
           renderItem={({ item }) => (
-            <FactureItem facture={item} openDetail={this._openDetail} />
+            <FactureItem
+              facture={item}
+              openDetail={this._openDetail}
+              openFactureDetail={this._openFactureDetail}
+            />
           )}
         />
       </View>

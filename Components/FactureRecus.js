@@ -7,11 +7,12 @@ import {
   TouchableOpacity,
   Image,
   Share,
+  ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-const longueur = Dimensions.get("screen").height / 2 + 100;
-const largeur = Dimensions.get("window").width / 2 + 100;
+const longueur = Dimensions.get("window").height / 2 + 100;
+const largeur = Dimensions.get("screen").width / 2 + 100;
 
 class FactureRecus extends React.Component {
   constructor(props) {
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   main_recus: {
+    flex: 1,
     margin: 10,
     justifyContent: "center",
     alignItems: "center",
@@ -124,7 +126,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#e91e63",
     justifyContent: "center",
     alignItems: "center",
-    elevation: 3,
+    elevation: 20,
   },
   share_image: {
     width: 30,
