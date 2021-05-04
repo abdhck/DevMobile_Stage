@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from "react-native";
 import moment from "moment";
+import "moment/locale/fr";
 import numeral from "numeral";
 import { decode } from "html-entities";
 import { LinearGradient } from "expo-linear-gradient";
@@ -16,6 +17,8 @@ import { Title } from "react-native-paper";
 import FadeIn from "../Animations/FadeIn";
 import FactureRecus from "../Components/FactureRecus";
 //import { connect } from "react-redux";
+
+moment.locale("fr");
 
 const hauteur = Dimensions.get("window").height / 4;
 const largeur = Dimensions.get("screen").width;
@@ -112,7 +115,7 @@ class FactureItem extends React.Component {
               <View style={styles.body_align}>
                 <Text style={styles.date_text}>
                   {" "}
-                  Période de : {facture.perio}{" "}
+                  Période de : {moment(facture.perio).format("MMMM YYYY")}{" "}
                 </Text>
                 {this._displayEyeImage()}
               </View>

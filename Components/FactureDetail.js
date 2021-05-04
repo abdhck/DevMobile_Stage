@@ -12,11 +12,13 @@ import {
 import { connect } from "react-redux";
 import numeral from "numeral";
 import moment from "moment";
+import "moment/locale/fr";
 import { decode } from "html-entities";
 import { Title, Caption } from "react-native-paper";
 
 const longueur = Dimensions.get("screen").height / 2;
 const largeur = Dimensions.get("window").width / 2 + 100;
+
 class FactureDetail extends React.Component {
   LogoTitle() {
     return (
@@ -69,6 +71,7 @@ class FactureDetail extends React.Component {
     );
   };
   render() {
+    moment.locale("fr");
     const { facture } = this.props.route.params;
     return (
       <View style={styles.container}>
