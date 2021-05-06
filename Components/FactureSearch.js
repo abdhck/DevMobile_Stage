@@ -17,6 +17,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
+import { RadioButton } from "react-native-paper";
+import { decode } from "html-entities";
 
 const hauteur = Dimensions.get("window").height / 3;
 
@@ -31,7 +33,9 @@ class FactureSearch extends React.Component {
       value: "",
       isDatePickerVisible: false,
       date: "",
-      displayFormat: "DD/MM/YYYY",
+      displayFormat: "MM-YYYY",
+      checked: "Mois/Année",
+      dateFilterFormat: "YYYY-MM",
     };
   }
 
@@ -91,10 +95,55 @@ class FactureSearch extends React.Component {
     );
   };
 
+  buttonFilter = () => {
+    return (
+      <View style={styles.container_btn}>
+        <Text style={styles.filter_title}>Mois</Text>
+        <RadioButton
+          value="Mois"
+          status={this.state.checked === "Mois" ? "checked" : "unchecked"}
+          onPress={() =>
+            this.setState({
+              checked: "Mois",
+              dateFilterFormat: "M",
+            })
+          }
+        />
+        <Text>Année</Text>
+        <RadioButton
+          value="Année"
+          status={this.state.checked === "Année" ? "checked" : "unchecked"}
+          onPress={() =>
+            this.setState({
+              checked: "Année",
+              dateFilterFormat: "YYYY",
+            })
+          }
+        />
+        <Text>Mois-Année</Text>
+        <RadioButton
+          value="Mois/Année"
+          status={this.state.checked === "Mois/Année" ? "checked" : "unchecked"}
+          onPress={() =>
+            this.setState({
+              checked: "Mois/Année",
+              dateFilterFormat: "YYYY-MM",
+            })
+          }
+        />
+      </View>
+    );
+  };
+
+  annuler = () => {
+    this.setState({
+      data: [],
+      date: "",
+    });
+  };
+
   searchBar = () => {
-    var btn_ok = "md-calendar-sharp";
-    var btn_no = "md-calendar-sharp";
-    var date_text = moment(this.state.date).format("YYYY-MM");
+    var date_text = moment(this.state.date).format(this.state.dateFilterFormat);
     return (
       <View style={styles.search_container}>
         <TouchableOpacity
@@ -117,10 +166,17 @@ class FactureSearch extends React.Component {
             </Text>
           </View>
         </TouchableOpacity>
+        {this.buttonFilter()}
         <View style={styles.container_btn}>
           <Button
             title="Chercher"
             onPress={() => this.searchItems(date_text)}
+            style={styles.container_btn}
+          />
+          <Button
+            title="Annuler"
+            color="red"
+            onPress={() => this.annuler()}
             style={styles.container_btn}
           />
         </View>
@@ -128,6 +184,7 @@ class FactureSearch extends React.Component {
     );
   };
   /****************************************************************************** */
+  /***********************configuration du tri par date************************* */
 
   renderSeparator = () => {
     return (
@@ -142,14 +199,20 @@ class FactureSearch extends React.Component {
   };
 
   searchItems = (text) => {
-    // var text = moment(this.state.date).format(this.state.displayFormat);
     let newData = this.props.dataFacture.filter((item) => {
       const itemData = `${item.perio.toUpperCase()}`;
       const textData = text.toUpperCase();
+      //.include retourne true si la valeur passé en parametre existe dans le tableau  et false sinon
       if (text.length > 0) {
-        return itemData.indexOf(textData) > -1;
+        return moment(itemData)
+          .format(this.state.dateFilterFormat)
+          .includes(textData);
       }
     });
+    // si l'utilisateur na pas choise de date
+    if (this.state.date == "") alert(" Veuillez choisir une date !");
+    // si la date choisi ne correspond a aucune facture
+    if (newData == "") alert(" Il n'y a pas de facture pour cette date !");
     this.setState({
       data: newData,
       value: text,
@@ -165,7 +228,19 @@ class FactureSearch extends React.Component {
       />
     );
   };
-
+  /************************************************************************************* */
+  /****************************fonction pour la facture******************************** */
+  _openDetail = (facture) => {
+    if (decode(facture.etat) == "Reglé") {
+      this.props.navigation.navigate("FactureRecus", { id: facture.id });
+    } else {
+      this.props.navigation.navigate("Payement", { id: facture.id });
+    }
+  };
+  _openFactureDetail = (facture) => {
+    this.props.navigation.navigate("FactureDetail", { facture: facture });
+  };
+  /************************************************************************************ */
   render() {
     return (
       <View style={styles.container}>
@@ -227,7 +302,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     margin: 3,
   },
-  btn_image: {},
+  filter_btn: {
+    flexDirection: "row",
+  },
+  filter_title: {
+    //color: "grey",
+  },
 });
 
 const mapStateToProps = (state) => {
