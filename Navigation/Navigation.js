@@ -158,7 +158,7 @@ const homeFactureStackNavigator = ({ navigation }) => (
       name="HomeFactureList"
       component={FactureList}
       options={{
-        title: "NetPaye",
+        title: "NetPay",
         headerLeft: (props) => (
           <TouchableOpacity
             style={styles.icon_left}
@@ -432,7 +432,7 @@ const HomeStackNavigator = ({ navigation }) => (
     <Stack.Screen
       name="FactureSearch"
       component={FactureSearch}
-      options={{ headerShown: false }}
+      options={{ title: "Recherche", headerShown: true }}
     />
   </Stack.Navigator>
 );
