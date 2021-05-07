@@ -5,18 +5,10 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  LinearGradient,
-  ScrollView,
   ImageBackground,
-  ActivityIndicator,
 } from "react-native";
 import { connect } from "react-redux";
 import numeral from "numeral";
-import moment from "moment";
-import { decode } from "html-entities";
-import { Title, Subheading, Headline } from "react-native-paper";
-import { Image, Avatar, Badge, Icon, withBadge } from "react-native-elements";
-import { Button } from "react-native";
 import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -26,18 +18,7 @@ const largeur = Dimensions.get("window").width;
 const ICON_TAILLE = 47;
 
 class Accueil extends React.Component {
-  _groupBy(tableauObjets, propriete) {
-    return tableauObjets.reduce(function (acc, obj) {
-      var cle = obj[propriete];
-      if (!acc[cle]) {
-        acc[cle] = [];
-      }
-      acc[cle].push(obj);
-      return acc;
-    }, {});
-  }
-
-  _montant(facture) {
+  _montant = (facture) => {
     var x = 0,
       y = 0;
     for (var i = 0; i < facture.length; i++) {
@@ -45,33 +26,17 @@ class Accueil extends React.Component {
       y = y + x;
     }
     return y;
-  }
+  };
 
-  _nombreDeFacture(facture) {
+  _nombreDeFacture = (facture) => {
     var nombre = 0;
     for (var i = 0; i < facture.length; i++) {
       nombre++;
     }
     return nombre;
-  }
-  _displayButton(facture, openFacture, image) {
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          openFacture(facture);
-        }}
-        activeOpacity={0.7}
-        style={styles.container_btn}
-      >
-        <Text style={styles.text_btn}>Voir la liste des factures</Text>
-      </TouchableOpacity>
-    );
-  }
-  _displayFactureImage(facture) {
-    var sourceImage = require("../Images/touch-screen.png");
-    return <Image style={styles.facture_image} source={sourceImage} />;
-  }
-  _displayHomeImage() {
+  };
+
+  _displayHomeImage = () => {
     var sourceImage = require("../Images/netforce.jpg");
     return (
       <View style={styles.container_image}>
@@ -81,46 +46,14 @@ class Accueil extends React.Component {
         ></ImageBackground>
       </View>
     );
-  }
-  _displayHomeImageFacuture() {
-    var sourceImage = require("../Images/OM.png");
-    return (
-      <View style={styles.container_image}>
-        <ImageBackground
-          style={styles.home_image}
-          source={sourceImage}
-        ></ImageBackground>
-      </View>
-    );
-  }
-  _displayImagePaye() {
-    var sourceImage = require("../Images/dinero.png");
-    return (
-      <View style={styles.container_image}>
-        <ImageBackground
-          style={styles.home_image}
-          source={sourceImage}
-        ></ImageBackground>
-      </View>
-    );
-  }
-
-  _displayImageTotal() {
-    var sourceImage = require("../Images/dinero.png");
-    return (
-      <View style={styles.container_image}>
-        <ImageBackground style={styles.home_image} source={sourceImage}>
-          <Text>Inside</Text>
-        </ImageBackground>
-      </View>
-    );
-  }
+  };
 
   render() {
     const {
       openFactureListe,
       openFactureImpayee,
       openFacturePayee,
+      openFactureSearch,
     } = this.props;
     var facture = this.props.dataFacture;
     var facturePayee = this.props.facturePayee;
@@ -140,15 +73,16 @@ class Accueil extends React.Component {
               </Text>
             </View>
           </View>
+
           <View style={styles.container}>
             <View style={styles.card_left_container}>
-              <Text style={styles.total_text_impayer}>Total impayées </Text>
+              <Text style={styles.total_text}>Total impayées </Text>
               <Text style={styles.montant_impayee}>
                 {numeral(this._montant(factureImpayee)).format("0,0")}F{" "}
               </Text>
             </View>
             <View style={styles.card_right_container}>
-              <Text style={styles.total_text_payer}>Total payées </Text>
+              <Text style={styles.total_text}>Total payées </Text>
               <Text style={styles.montant_payee}>
                 {numeral(this._montant(facturePayee)).format("0,0")}F{" "}
               </Text>
@@ -160,7 +94,6 @@ class Accueil extends React.Component {
           <View style={styles.card_center_title}>
             <Text style={styles.title_text}>Nombre de factures </Text>
           </View>
-
           <View style={styles.card_groupe_container}>
             <View style={styles.card_center_payee}>
               <Text style={styles.nombre_text}>Payée </Text>
@@ -185,31 +118,20 @@ class Accueil extends React.Component {
 
         <TouchableOpacity
           onPress={() => {
-            openFacturePayee();
+            openFactureSearch();
           }}
           activeOpacity={0.7}
-          style={styles.container_btn_payee}
+          style={styles.container_btn}
         >
           <View style={styles.btn_image_payee}>
-            <AntDesign name="pptfile1" size={ICON_TAILLE} color={"#5cb85c"} />
+            <Ionicons
+              name="search-outline"
+              size={ICON_TAILLE}
+              color={"#5cb85c"}
+            />
           </View>
           <View style={styles.btn_text_container}>
-            <Text style={styles.btn_text}>Voir facture payée</Text>
-          </View>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => {
-            openFactureImpayee();
-          }}
-          activeOpacity={0.7}
-          style={styles.container_btn_impayee}
-        >
-          <View style={styles.btn_image_impayee}>
-            <AntDesign name="exclefile1" size={ICON_TAILLE} color={"#e43347"} />
-          </View>
-          <View style={styles.btn_text_container}>
-            <Text style={styles.btn_text}>Voir facture impayée</Text>
+            <Text style={styles.btn_text}>Rechercher une facture</Text>
           </View>
         </TouchableOpacity>
 
@@ -218,7 +140,7 @@ class Accueil extends React.Component {
             openFactureListe();
           }}
           activeOpacity={0.7}
-          style={styles.container_all_btn}
+          style={styles.container_btn}
         >
           <View style={styles.btn_image_tout}>
             <Ionicons
@@ -229,6 +151,13 @@ class Accueil extends React.Component {
           </View>
           <View style={styles.btn_text_container}>
             <Text style={styles.btn_text}>Voir toutes les factures</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity activeOpacity={1} style={styles.container_all_btn}>
+          <View style={styles.btn_image_tout}>{this._displayHomeImage()}</View>
+          <View style={styles.btn_text_container}>
+            <Text style={styles.btn_text}>NetPay</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -246,14 +175,13 @@ const styles = StyleSheet.create({
     padding: 3,
     borderBottomLeftRadius: 7,
     borderBottomRightRadius: 7,
+    marginBottom: 3,
   },
   container: {
     //height: hauteur / 2,
     //marginTop: 17,
     flexDirection: "row",
-    //flex: 1,
     backgroundColor: "#fff",
-    //padding: 3,
     borderWidth: 1,
     borderColor: "#fff",
     margin: 5,
@@ -269,34 +197,27 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-around",
-    // alignItems: "flex-start",
-    // borderRadius: 1,
     borderLeftWidth: 1,
     borderStyle: "dashed",
     paddingLeft: 7,
     borderLeftColor: "#02519e",
   },
   card_center_container: {
-    //flex: 1,
     flexDirection: "column",
-    // borderRadius: 1,
     borderWidth: 1,
     borderColor: "#eee",
-    elevation: 0.5,
+    elevation: 0.3,
     margin: 5,
   },
   card_center_title: {
-    //flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     borderBottomWidth: 1,
     borderColor: "#eee",
     backgroundColor: "#fff",
-    //borderRadius: 3,
   },
   card_groupe_container: {
-    //flex: 1,
     flexDirection: "row",
   },
   card_center_payee: {
@@ -340,13 +261,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 3,
   },
-  total_text_impayer: {
-    //fontSize: 17,
-    color: "grey",
-  },
-  total_text_payer: {
-    //fontSize: 13,
-    color: "grey",
+  total_text: {
+    fontSize: 17,
+    color: "#5d6b78",
   },
   montant_impayee: {
     color: "#e43347",
@@ -365,14 +282,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   nombre_text: {
-    color: "grey",
+    color: "#5d6b78",
     fontWeight: "300",
-    //fontSize: 17,
+    fontSize: 17,
   },
   title_text: {
     fontSize: 25,
     fontWeight: "700",
-    color: "grey",
+    color: "#5d6b78",
   },
   titre: {
     color: "#fff",
@@ -386,14 +303,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 37,
     alignItems: "center",
-    //paddingLeft: 7,
   },
   nombre_impayee: {
     color: "#e43347",
     justifyContent: "center",
     fontSize: 37,
     alignItems: "center",
-    //paddingLeft: 7,
   },
   nombre_total: {
     color: "#02519e",
@@ -408,7 +323,6 @@ const styles = StyleSheet.create({
     height: 60,
   },
   container_image: {
-    //flex: 1,
     justifyContent: "center",
   },
   logo_header: {
@@ -430,40 +344,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     margin: 5,
     height: hauteur / 3,
+    elevation: 0.3,
+  },
+  container_btn: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#eee",
+    backgroundColor: "#fff",
+    margin: 5,
+    marginLeft: 21,
+    marginRight: 21,
+    height: hauteur / 3,
     elevation: 3,
-  },
-  container_btn_payee: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#eee",
-    backgroundColor: "#fff",
-    margin: 5,
-    marginLeft: 21,
-    marginRight: 21,
-    height: hauteur / 3,
-    elevation: 1,
-  },
-  container_btn_impayee: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#eee",
-    backgroundColor: "#fff",
-    margin: 5,
-    marginLeft: 21,
-    marginRight: 21,
-    height: hauteur / 3,
-    elevation: 1,
-  },
-  btn_impayee: {
-    //flex: 1,
-    flexDirection: "row",
-    // justifyContent: "center",
-    // alignItems: "center",
-    // borderWidth: 1,
   },
   btn_image_impayee: {
     flex: 0.5,
@@ -490,9 +384,8 @@ const styles = StyleSheet.create({
     color: "#02519e",
   },
   btn_text: {
-    color: "grey",
-    // fontWeight: "600",
-    fontSize: 21,
+    color: "#5d6b78",
+    fontSize: 19,
   },
 });
 
