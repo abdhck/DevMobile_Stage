@@ -119,7 +119,7 @@ const ImpayerStackNavigator = ({ navigation }) => (
       name="FactureNonPayee"
       component={FactureNonPayee}
       options={{
-        title: "Factures non reglée",
+        title: "Factures impayée",
         headerLeft: (props) => (
           <TouchableOpacity
             style={styles.icon_left}
@@ -250,19 +250,6 @@ const accueilStackNavigator = ({ navigation }) => (
             />
           </TouchableOpacity>
         ),
-        headerRight: (props) => (
-          <TouchableOpacity
-            style={styles.icon_right}
-            onPress={() => {
-              navigation.navigate("FactureSearch");
-            }}
-          >
-            <Image
-              source={require("../Images/search.png")}
-              style={styles.iconbar}
-            />
-          </TouchableOpacity>
-        ),
       }}
     />
   </Stack.Navigator>
@@ -361,11 +348,6 @@ const HomeStackNavigator = ({ navigation }) => (
         elevation: 0,
       },
       headerTintColor: "#fff",
-      headerTitleStyle: {
-        //fontWeight: "bold",
-        //textAlign: "center",
-        // left: 10,
-      },
     }}
   >
     <Stack.Screen
@@ -380,15 +362,13 @@ const HomeStackNavigator = ({ navigation }) => (
         title: "NetPay",
         headerRight: (props) => (
           <TouchableOpacity
+            activeOpacity={0.8}
             style={styles.icon_right}
             onPress={() => {
               navigation.navigate("FactureSearch");
             }}
           >
-            <Image
-              source={require("../Images/search.png")}
-              style={styles.iconbar}
-            />
+            <Ionicons name="search" size={ICON_TAILLE} color={"#fff"} />
           </TouchableOpacity>
         ),
         //headerShown: true,
@@ -440,9 +420,9 @@ const HomeStackNavigator = ({ navigation }) => (
 const MyTopTab = () => (
   <TopTab.Navigator
     tabBarOptions={{
-      tabStyle: { backgroundColor: "#02519e" },
+      style: { backgroundColor: "#02519e" },
       activeTintColor: "#fff",
-      indicatorStyle: { color: "#fff" },
+      indicatorStyle: { backgroundColor: "#fff", height: 2 },
     }}
   >
     <Tab.Screen
