@@ -77,6 +77,7 @@ class FactureItem extends React.Component {
     //console.log("donnee facture: " + this.props);
     const { facture, openDetail, openFactureDetail } = this.props;
     //console.log("bug :" + openDetail);
+    var periode = moment(facture.perio).format("MMMM YYYY").toUpperCase();
     return (
       <View style={styles.main_container}>
         {/*<View style={styles.right}>{this._displayFactureImage(facture)}</View>*/}
@@ -84,7 +85,7 @@ class FactureItem extends React.Component {
           onPress={() => {
             openFactureDetail(facture);
           }}
-          activeOpacity={0.7}
+          activeOpacity={0.8}
         >
           <View style={styles.left}>
             <View style={styles.header}>
@@ -113,10 +114,7 @@ class FactureItem extends React.Component {
             <View style={styles.footer}>
               {/*<Text style={styles.client_text}> {facture.auteur_modif} </Text>*/}
               <View style={styles.body_align}>
-                <Text style={styles.date_text}>
-                  {" "}
-                  Période de : {moment(facture.perio).format("MMMM YYYY")}{" "}
-                </Text>
+                <Text style={styles.date_text}> Période de : {periode} </Text>
                 {this._displayEyeImage()}
               </View>
               {/* <Text style={styles.etat_text}>
@@ -137,7 +135,7 @@ class FactureItem extends React.Component {
               openDetail(facture);
             }}
             style={styles.rightbas}
-            activeOpacity={0.7}
+            activeOpacity={0.8}
           >
             {this._displayFactureImage(facture)}
             <Text> {this._voirRecuOuPayer(facture)} </Text>
@@ -207,7 +205,7 @@ const styles = StyleSheet.create({
     //color: "#2196F3",
   },
   date_text: {
-    color: "grey",
+    color: "#5d6b78",
     flexWrap: "wrap",
   },
   commentaire_text: {
@@ -216,7 +214,7 @@ const styles = StyleSheet.create({
   },
   montant_text: {
     fontSize: 20,
-    color: "grey",
+    color: "#5d6b78",
   },
   montant_decord: {
     color: "#02519e",
