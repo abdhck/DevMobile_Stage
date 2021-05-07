@@ -3,8 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  TextInput,
-  ListItem,
   StyleSheet,
   Dimensions,
   TouchableOpacity,
@@ -15,7 +13,7 @@ import FactureItem from "./FactureItem";
 import { SearchBar } from "react-native-elements";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import DateTimePicker from "@react-native-community/datetimepicker";
+//import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
 import { RadioButton } from "react-native-paper";
 import { decode } from "html-entities";
@@ -33,9 +31,9 @@ class FactureSearch extends React.Component {
       value: "",
       isDatePickerVisible: false,
       date: "",
-      displayFormat: "MM-YYYY",
+      displayFormat: "MM-YYYY", //format de la date afficher a l'utilisateur
       checked: "Mois/Année",
-      dateFilterFormat: "YYYY-MM",
+      dateFilterFormat: "YYYY-MM", //format de la date utilisé pour la recherche
     };
   }
 
@@ -76,58 +74,43 @@ class FactureSearch extends React.Component {
     );
   };
 
-  button = (model) => {
+  buttonChoisirDate = () => {
     return (
       <TouchableOpacity
         onPress={this.showDatePicker}
         activeOpacity={0.7}
         style={styles.container_all_btn}
       >
-        <View style={styles.btn_image}>
+        <View style={styles.btn_image_tout}>
           <Ionicons
-            //name="md-calendar-sharp"
-            name={model}
+            name="md-calendar-sharp"
             size={ICON_TAILLE}
             color={"#02519e"}
           />
+        </View>
+        <View style={styles.btn_text_container}>
+          <Text style={styles.btn_text}>
+            {this.state.date == ""
+              ? "Choisir une date"
+              : moment(this.state.date).format(this.state.displayFormat)}
+          </Text>
         </View>
       </TouchableOpacity>
     );
   };
 
-  buttonFilter = () => {
+  radioBoutton = (titre, moisAnnee, datefilterformat, displayformat) => {
     return (
       <View style={styles.container_btn}>
-        <Text style={styles.filter_title}>Mois</Text>
+        <Text style={styles.filter_title}>{titre}</Text>
         <RadioButton
-          value="Mois"
-          status={this.state.checked === "Mois" ? "checked" : "unchecked"}
+          value={moisAnnee}
+          status={this.state.checked === moisAnnee ? "checked" : "unchecked"}
           onPress={() =>
             this.setState({
-              checked: "Mois",
-              dateFilterFormat: "M",
-            })
-          }
-        />
-        <Text>Année</Text>
-        <RadioButton
-          value="Année"
-          status={this.state.checked === "Année" ? "checked" : "unchecked"}
-          onPress={() =>
-            this.setState({
-              checked: "Année",
-              dateFilterFormat: "YYYY",
-            })
-          }
-        />
-        <Text>Mois-Année</Text>
-        <RadioButton
-          value="Mois/Année"
-          status={this.state.checked === "Mois/Année" ? "checked" : "unchecked"}
-          onPress={() =>
-            this.setState({
-              checked: "Mois/Année",
-              dateFilterFormat: "YYYY-MM",
+              checked: moisAnnee,
+              dateFilterFormat: datefilterformat,
+              displayFormat: displayformat,
             })
           }
         />
@@ -135,6 +118,17 @@ class FactureSearch extends React.Component {
     );
   };
 
+  buttonFilter = () => {
+    return (
+      <View style={styles.container_btn}>
+        {this.radioBoutton("Mois", "Mois", "MM", "MM")}
+        {this.radioBoutton("Année", "Année", "YYYY", "YYYY")}
+        {this.radioBoutton("Mois-Année", "Mois/Année", "YYYY-MM", "MM-YYYY")}
+      </View>
+    );
+  };
+
+  //fonction pour boutton annuler, on vide les données
   annuler = () => {
     this.setState({
       data: [],
@@ -142,44 +136,31 @@ class FactureSearch extends React.Component {
     });
   };
 
+  buttonChercherAnnuler = (datetext) => {
+    return (
+      <View style={styles.container_btn}>
+        <Button
+          title="Chercher"
+          onPress={() => this.searchItems(datetext)}
+          style={styles.container_btn}
+        />
+        <Button
+          title="Annuler"
+          color="red"
+          onPress={() => this.annuler()}
+          style={styles.container_btn}
+        />
+      </View>
+    );
+  };
+
   searchBar = () => {
     var date_text = moment(this.state.date).format(this.state.dateFilterFormat);
     return (
       <View style={styles.search_container}>
-        <TouchableOpacity
-          onPress={this.showDatePicker}
-          activeOpacity={0.7}
-          style={styles.container_all_btn}
-        >
-          <View style={styles.btn_image_tout}>
-            <Ionicons
-              name="md-calendar-sharp"
-              size={ICON_TAILLE}
-              color={"#02519e"}
-            />
-          </View>
-          <View style={styles.btn_text_container}>
-            <Text style={styles.btn_text}>
-              {this.state.date == ""
-                ? "Choisir une date"
-                : moment(this.state.date).format(this.state.displayFormat)}
-            </Text>
-          </View>
-        </TouchableOpacity>
+        {this.buttonChoisirDate()}
         {this.buttonFilter()}
-        <View style={styles.container_btn}>
-          <Button
-            title="Chercher"
-            onPress={() => this.searchItems(date_text)}
-            style={styles.container_btn}
-          />
-          <Button
-            title="Annuler"
-            color="red"
-            onPress={() => this.annuler()}
-            style={styles.container_btn}
-          />
-        </View>
+        {this.buttonChercherAnnuler(date_text)}
       </View>
     );
   };
@@ -198,9 +179,10 @@ class FactureSearch extends React.Component {
     );
   };
 
+  // fonction pour la recherche
   searchItems = (text) => {
     let newData = this.props.dataFacture.filter((item) => {
-      const itemData = `${item.perio.toUpperCase()}`;
+      const itemData = item.perio.toUpperCase();
       const textData = text.toUpperCase();
       //.include retourne true si la valeur passé en parametre existe dans le tableau  et false sinon
       if (text.length > 0) {
@@ -212,7 +194,7 @@ class FactureSearch extends React.Component {
     // si l'utilisateur na pas choise de date
     if (this.state.date == "") alert(" Veuillez choisir une date !");
     // si la date choisi ne correspond a aucune facture
-    if (newData == "") alert(" Il n'y a pas de facture pour cette date !");
+    else if (newData == "") alert(" Il n'y a pas de facture pour cette date !");
     this.setState({
       data: newData,
       value: text,
@@ -266,7 +248,6 @@ class FactureSearch extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // paddingTop: 21,
   },
   search_container: {},
   container_all_btn: {
@@ -292,8 +273,7 @@ const styles = StyleSheet.create({
     color: "#02519e",
   },
   btn_text: {
-    color: "grey",
-    // fontWeight: "600",
+    color: "#5d6b78",
     fontSize: 21,
   },
   container_btn: {
@@ -306,7 +286,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   filter_title: {
-    //color: "grey",
+    // color: "#5d6b78",
   },
 });
 
