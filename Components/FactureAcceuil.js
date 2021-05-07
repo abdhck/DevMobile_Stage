@@ -50,8 +50,11 @@ class FactureAcceuil extends React.Component {
   _openFacturePayee = () => {
     this.props.navigation.navigate("PayerStackNavigator");
   };
+  _openFactureSearch = () => {
+    this.props.navigation.navigate("FactureSearch");
+  };
 
-  _displayLoading() {
+  _displayLoading = () => {
     if (this.state.isLoading) {
       return (
         <View style={styles.loading_container}>
@@ -59,9 +62,9 @@ class FactureAcceuil extends React.Component {
         </View>
       );
     }
-  }
+  };
 
-  _factureLimite(factureListe) {
+  _factureLimite = (factureListe) => {
     var facture = [];
     var data = factureListe.sort((a, b) => new Date(b.date) - new Date(a.date));
     for (var i = this.compteur; i < this.compteur + 3; i++) {
@@ -70,8 +73,8 @@ class FactureAcceuil extends React.Component {
       }
     }
     return facture;
-  }
-  _displayButton(facture, openFacture) {
+  };
+  _displayButton = (facture, openFacture) => {
     return (
       <TouchableOpacity
         onPress={() => {
@@ -84,7 +87,7 @@ class FactureAcceuil extends React.Component {
         <Text style={styles.text_btn}>Voir la liste des factures</Text>
       </TouchableOpacity>
     );
-  }
+  };
   render() {
     //console.log(this.props);
     var factureTmp = this._factureLimite(this.props.dataFacture);
@@ -98,6 +101,7 @@ class FactureAcceuil extends React.Component {
             openFactureListe={this._openFactureListe}
             openFactureImpayee={this._openFactureImpayee}
             openFacturePayee={this._openFacturePayee}
+            openFactureSearch={this._openFactureSearch}
           />
           {/*this._displayButton(this.props.dataFacture, this._openFactureListe)*/}
         </ScrollView>
@@ -142,7 +146,6 @@ class FactureAcceuil extends React.Component {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
-    //backgroundColor: "#fff",
   },
   loading_container: {
     position: "absolute",
@@ -162,7 +165,6 @@ const styles = StyleSheet.create({
   },
   text_btn: {
     fontSize: 21,
-    //color: "#02519e",
   },
   container: {
     //flex: 1,
