@@ -91,13 +91,13 @@ class FactureDetail extends React.Component {
           <View style={styles.body}>
             <View style={styles.body_left}>
               <Text style={styles.libelle}>{"  "}Libéllés</Text>
-              <Text>
+              <Text style={styles.libelle_color}>
                 {"  "}Le client{"  "}:{" "}
               </Text>
-              <Text>
+              <Text style={styles.libelle_color}>
                 {"  "}Montant Hors Taxtes{"  "}:{" "}
               </Text>
-              <Text>
+              <Text style={styles.libelle_color}>
                 {"  "}Montant TTC{"  "}:{" "}
               </Text>
 
@@ -123,13 +123,13 @@ class FactureDetail extends React.Component {
             </View>
             <View style={styles.body_right}>
               <Text style={styles.libelle}>{"  "}Prix</Text>
-              <Text> {facture.client}</Text>
-              <Text style={styles.montant_text}>
+              <Text style={styles.libelle_color}> {facture.client}</Text>
+              <Text style={styles.libelle_color}>
                 {" "}
                 {numeral(facture.montantht).format("0,0")}
                 {" F "}
               </Text>
-              <Text style={styles.montant_text}>
+              <Text style={styles.libelle_color}>
                 {" "}
                 {numeral(facture.montantttc).format("0,0")}
                 {" F "}
@@ -168,22 +168,22 @@ class FactureDetail extends React.Component {
             </View>
           </View>
           <View style={styles.footer}>
-            <Text style={styles.montant_text}>
+            <Text style={styles.libelle_color}>
               {"  "}Montant total{"  "}:{" "}
               {numeral(facture.montantttc).format("0,0")}
               {" F "}
             </Text>
-            <Text style={styles.montant_text}>
+            <Text style={styles.libelle_color}>
               {"  "}Total réglé{"  "}:{" "}
               {numeral(facture.totat_regle).format("0,0")}
               {" F "}
             </Text>
-            <Text style={styles.montant_text}>
+            <Text style={styles.libelle_color}>
               {"  "}Reste{"  "}: {numeral(facture.reste).format("0,0")}
               {" F "}
             </Text>
 
-            <Text style={styles.montant_text}>
+            <Text style={styles.libelle_color}>
               {"  "}Etat{"  "}: {this._couleurEtatFacture(facture)}
             </Text>
           </View>
@@ -325,6 +325,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     // fontStyle: "italic",
     color: "#009387",
+  },
+  libelle_color: {
+    //fontSize: 15,
+    color: "#0b3052",
   },
 });
 
