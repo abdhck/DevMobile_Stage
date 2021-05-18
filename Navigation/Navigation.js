@@ -108,11 +108,6 @@ const ImpayerStackNavigator = ({ navigation }) => (
         elevation: 0,
       },
       headerTintColor: "#fff",
-      headerTitleStyle: {
-        //fontWeight: "bold",
-        //textAlign: "center",
-        // left: 10,
-      },
     }}
   >
     <Stack.Screen
@@ -147,11 +142,6 @@ const homeFactureStackNavigator = ({ navigation }) => (
         elevation: 0,
       },
       headerTintColor: "#fff",
-      headerTitleStyle: {
-        //fontWeight: "bold",
-        //textAlign: "center",
-        // left: 10,
-      },
     }}
   >
     <Stack.Screen
@@ -186,11 +176,6 @@ const FactureParametreStackNavigator = ({ navigation }) => (
         elevation: 0,
       },
       headerTintColor: "#fff",
-      headerTitleStyle: {
-        //fontWeight: "bold",
-        //textAlign: "center",
-        // left: 10,
-      },
     }}
   >
     <Stack.Screen
@@ -225,11 +210,6 @@ const accueilStackNavigator = ({ navigation }) => (
         elevation: 0,
       },
       headerTintColor: "#fff",
-      headerTitleStyle: {
-        //fontWeight: "bold",
-        //textAlign: "center",
-        // left: 10,
-      },
     }}
   >
     <Stack.Screen
@@ -258,6 +238,7 @@ const accueilStackNavigator = ({ navigation }) => (
 const MyDrawer = () => {
   return (
     <Drawer.Navigator
+      backBehavior="initialRoute"
       initialRouteName="accueilStackNavigator"
       drawerStyle={{
         backgroundColor: "#fff",
@@ -419,6 +400,8 @@ const HomeStackNavigator = ({ navigation }) => (
 
 const MyTopTab = () => (
   <TopTab.Navigator
+    backBehavior="initialRoute"
+    initialRouteName="FactureNonPayee"
     tabBarOptions={{
       style: { backgroundColor: "#02519e" },
       activeTintColor: "#fff",
