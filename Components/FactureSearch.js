@@ -17,6 +17,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import moment from "moment";
 import { RadioButton } from "react-native-paper";
 import { decode } from "html-entities";
+import Modal from "react-native-modal";
 
 const hauteur = Dimensions.get("window").height / 3;
 
@@ -34,8 +35,57 @@ class FactureSearch extends React.Component {
       displayFormat: "MM-YYYY", //format de la date afficher a l'utilisateur
       checked: "Mois/Année",
       dateFilterFormat: "YYYY-MM", //format de la date utilisé pour la recherche
+      visibleModal: null,
+      modalText: "",
     };
   }
+
+  /**********************Modal Configuration*************************************/
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button_modal}>
+        <Text>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text style={styles.btn_text}>{this.state.modalText}</Text>
+      {this._renderButton("Fermer", () =>
+        this.setState({ visibleModal: null })
+      )}
+    </View>
+  );
+
+  _setModalMessage = (message) => {
+    this.setState({
+      visibleModal: 1,
+      modalText: message,
+    });
+  };
+
+  _displayModal = () => {
+    return (
+      <View style={styles.container_modal}>
+        <Modal
+          isVisible={this.state.visibleModal === 1}
+          backdropColor={"red"}
+          backdropOpacity={0.5}
+          animationIn={"zoomInDown"}
+          animationOut={"zoomOutUp"}
+          animationInTiming={1000}
+          animationOutTiming={1000}
+          backdropTransitionInTiming={1000}
+          backdropTransitionOutTiming={1000}
+        >
+          {this._renderModalContent()}
+        </Modal>
+      </View>
+    );
+  };
+
+  /******************************************************************************/
 
   /********************** configuration du calendrier ***************************/
   showDatePicker = () => {
@@ -56,7 +106,7 @@ class FactureSearch extends React.Component {
       date: dateInput,
       isDatePickerVisible: false,
     });
-    console.log(dateInput);
+    // console.log(dateInput);
     //this.hideDatePicker();
   };
 
@@ -161,6 +211,7 @@ class FactureSearch extends React.Component {
         {this.buttonChoisirDate()}
         {this.buttonFilter()}
         {this.buttonChercherAnnuler(date_text)}
+        {this._displayModal()}
       </View>
     );
   };
@@ -192,9 +243,15 @@ class FactureSearch extends React.Component {
       }
     });
     // si l'utilisateur na pas choise de date
-    if (this.state.date == "") alert(" Veuillez choisir une date !");
+    if (this.state.date == "") {
+      //affiche le model
+      this._setModalMessage("Veuillez choisir une date !");
+    }
     // si la date choisi ne correspond a aucune facture
-    else if (newData == "") alert(" Il n'y a pas de facture pour cette date !");
+    else if (newData == "") {
+      //affiche le model
+      this._setModalMessage("Il n'y a pas de facture pour cette date !");
+    }
     this.setState({
       data: newData,
       value: text,
@@ -284,6 +341,28 @@ const styles = StyleSheet.create({
   },
   filter_btn: {
     flexDirection: "row",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
+  },
+  container_modal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button_modal: {
+    backgroundColor: "lightblue",
+    padding: 12,
+    margin: 16,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 4,
+    borderColor: "rgba(0, 0, 0, 0.1)",
   },
   filter_title: {
     // color: "#5d6b78",
