@@ -53,13 +53,14 @@ class Login extends React.Component {
           this._toggleLogin();
           this._toggleLogin1();
           this._toggleLogin2();
+          this._toggleIdentifiant();
+          //this._toggleIMotDePasse();
           this.props.navigation.replace("MyDrawer");
         } else {
           ToastAndroid.show(
             "identifiant et/ou passe incorrect !",
             ToastAndroid.SHORT
           );
-          console.log("identifiant incorrect !");
         }
       });
     } else {
@@ -87,19 +88,27 @@ class Login extends React.Component {
     );
   }
 
-  _toggleLogin() {
+  _toggleLogin = () => {
     const action = { type: "CONNECT_USER", value: this.state.infoFacture };
     this.props.dispatch(action);
-  }
+  };
 
-  _toggleLogin1() {
+  _toggleLogin1 = () => {
     const action = { type: "FACTURE_PAYEE" };
     this.props.dispatch(action);
-  }
-  _toggleLogin2() {
+  };
+  _toggleLogin2 = () => {
     const action = { type: "FACTURE_IMPAYEE" };
     this.props.dispatch(action);
-  }
+  };
+  _toggleIdentifiant = () => {
+    const action = { type: "USER_IDENTIFIANT", value: this.props.loginIdent };
+    this.props.dispatch(action);
+  };
+  _toggleIMotDePasse = () => {
+    const action = { type: "USER_MOT_DE_PASSE", value: this.props.loginPass };
+    this.props.dispatch(action);
+  };
 
   render() {
     var sourceImage = require("../assets/ic_background.jpg");
