@@ -15,6 +15,7 @@ import FactureCalculAcceuil from "./FactureCalculAcceuil";
 import Accueil from "./Accueil";
 import { decode } from "html-entities";
 import Carousel from "../Carousels/Carousel";
+import { testApi } from "../API/FactureAPI";
 
 const largeur = Dimensions.get("screen").height;
 const ITEM_HEIGHT = largeur / 4;
@@ -27,9 +28,35 @@ class FactureAcceuil extends React.Component {
     this.state = {
       infoFacture: [],
       isLoading: false,
-      refreshing: false,
+      loginIdent: "",
     };
   }
+
+  componentDidMount = () => {
+    testApi(loginIdent).then((data) => {
+      this.setState({
+        infoFacture: [...this.state.infoFacture, ...data],
+        isLoading: false,
+      });
+      if (data.length !== 0) {
+        this._toggleLogin();
+        this._toggleLogin1();
+        this._toggleLogin2();
+      }
+    });
+  };
+  _toggleLogin = () => {
+    const action = { type: "CONNECT_USER", value: this.state.infoFacture };
+    this.props.dispatch(action);
+  };
+  _toggleLogin1 = () => {
+    const action = { type: "FACTURE_PAYEE" };
+    this.props.dispatch(action);
+  };
+  _toggleLogin2 = () => {
+    const action = { type: "FACTURE_IMPAYEE" };
+    this.props.dispatch(action);
+  };
 
   _openDetail = (facture) => {
     if (decode(facture.etat) == "Reglé") {
@@ -89,7 +116,6 @@ class FactureAcceuil extends React.Component {
     );
   };
   render() {
-    //console.log(this.props);
     var factureTmp = this._factureLimite(this.props.dataFacture);
     for (var i = 0; i < factureTmp.length; i++) {
       this.factureLimte.push(factureTmp[i]);
@@ -176,6 +202,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     dataFacture: state.dataFacture,
+    loginIdent: state.loginIdent,
   };
 };
 
