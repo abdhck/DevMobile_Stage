@@ -2,11 +2,11 @@ import { decode } from "html-entities";
 
 const initialState = {
   loginIdent: "",
+  loginPass: "",
   dataFacture: [],
   facturePayee: [],
   factureImpayee: [],
   isTabVisible: true,
-  //loginPass:"",
 };
 
 function toggleLogin(state = initialState, action) {
@@ -46,6 +46,16 @@ function toggleLogin(state = initialState, action) {
         factureImpayee: factureImpayee,
       };
       return nextState || state;
+    case "USER_IDENTIFIANT":
+      nextState = {
+        ...state,
+        loginIdent: action.value,
+      };
+    case "USER_MOT_DE_PASSE":
+      nextState = {
+        ...state,
+        loginPass: action.value,
+      };
     default:
       return state;
   }
